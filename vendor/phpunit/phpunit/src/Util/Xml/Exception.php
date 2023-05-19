@@ -7,17 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration;
+namespace PHPUnit\Util\Xml;
+
+use RuntimeException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class SourceFilter
+final class Exception extends RuntimeException implements \PHPUnit\Exception
 {
-    public function includes(Source $source, string $path): bool
-    {
-        $files = (new SourceMapper)->map($source);
-
-        return isset($files[$path]);
-    }
 }

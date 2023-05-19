@@ -1253,7 +1253,7 @@ class Builder implements BuilderContract
         $type = 'between';
 
         if ($values instanceof CarbonPeriod) {
-            $values = [$values->start, $values->end];
+            $values = $values->toArray();
         }
 
         $this->wheres[] = compact('type', 'column', 'values', 'boolean', 'not');
@@ -2232,7 +2232,7 @@ class Builder implements BuilderContract
         $type = 'between';
 
         if ($values instanceof CarbonPeriod) {
-            $values = [$values->start, $values->end];
+            $values = $values->toArray();
         }
 
         $this->havings[] = compact('type', 'column', 'values', 'boolean', 'not');

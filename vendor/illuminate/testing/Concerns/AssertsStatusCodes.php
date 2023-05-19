@@ -54,6 +54,7 @@ trait AssertsStatusCodes
     /**
      * Assert that the response has a 301 "Moved Permanently" status code.
      *
+     * @param  int  $status
      * @return $this
      */
     public function assertMovedPermanently()
@@ -64,6 +65,7 @@ trait AssertsStatusCodes
     /**
      * Assert that the response has a 302 "Found" status code.
      *
+     * @param  int  $status
      * @return $this
      */
     public function assertFound()
@@ -142,16 +144,6 @@ trait AssertsStatusCodes
     }
 
     /**
-     * Assert that the response has a 410 "Gone" status code.
-     *
-     * @return $this
-     */
-    public function assertGone()
-    {
-        return $this->assertStatus(410);
-    }
-
-    /**
      * Assert that the response has a 415 "Unsupported Media Type" status code.
      *
      * @return $this
@@ -179,25 +171,5 @@ trait AssertsStatusCodes
     public function assertTooManyRequests()
     {
         return $this->assertStatus(429);
-    }
-
-    /**
-     * Assert that the response has a 500 "Internal Server Error" status code.
-     *
-     * @return $this
-     */
-    public function assertInternalServerError()
-    {
-        return $this->assertStatus(500);
-    }
-
-    /**
-     * Assert that the response has a 503 "Service Unavailable" status code.
-     *
-     * @return $this
-     */
-    public function assertServiceUnavailable()
-    {
-        return $this->assertStatus(503);
     }
 }

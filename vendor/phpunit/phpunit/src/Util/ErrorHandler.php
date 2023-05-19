@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Util;
 
 use const E_DEPRECATED;
 use const E_NOTICE;
@@ -18,6 +18,7 @@ use const E_USER_WARNING;
 use const E_WARNING;
 use function debug_backtrace;
 use function error_reporting;
+use function in_array;
 use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
@@ -37,13 +38,14 @@ final class ErrorHandler
     }
 
     /**
-     * @throws NoTestCaseObjectOnCallStackException
+     * @throws Exception
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
         $suppressed = !($errorNumber & error_reporting());
 
-        if ($suppressed) {
+        if ($suppressed &&
+            in_array($errorNumber, [E_DEPRECATED, E_NOTICE, E_STRICT, E_WARNING], true)) {
             return false;
         }
 
@@ -120,7 +122,9 @@ final class ErrorHandler
                 break;
 
             default:
+                // @codeCoverageIgnoreStart
                 return false;
+                // @codeCoverageIgnoreEnd
         }
 
         return true;
@@ -129,15 +133,19 @@ final class ErrorHandler
     public function enable(): void
     {
         if ($this->enabled) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $oldErrorHandler = set_error_handler($this);
 
         if ($oldErrorHandler !== null) {
+            // @codeCoverageIgnoreStart
             restore_error_handler();
 
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $this->enabled = true;
@@ -146,7 +154,9 @@ final class ErrorHandler
     public function disable(): void
     {
         if (!$this->enabled) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         restore_error_handler();
@@ -165,6 +175,8 @@ final class ErrorHandler
             }
         }
 
+        // @codeCoverageIgnoreStart
         throw new NoTestCaseObjectOnCallStackException;
+        // @codeCoverageIgnoreEnd
     }
 }
